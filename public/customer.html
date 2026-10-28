@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#eef3f7">
+  <title>ISP Home Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="customer.css">
+</head>
+<body>
+  <main class="phone-app">
+    <header class="user-header">
+      <div class="brand-line"><span class="brand-icon">⌁</span><strong>ISP Home Connect</strong><button id="profileShortcut" class="avatar" aria-label="Open profile">U</button></div>
+      <p id="welcomeLine">Hi there!</p>
+    </header>
+    <div id="portalError" class="portal-error hidden"></div>
+    <div class="portal-content">
+      <section class="portal-view active" data-view="home">
+        <div class="summary-grid">
+          <article class="summary-card plan-card"><div class="eyebrow">Plan &amp; Speed</div><strong id="planName">—</strong><b id="planSpeed">—</b><span class="soft-pill" id="planStatus">Active</span></article>
+          <article class="summary-card usage-card"><div class="eyebrow">Data Usage</div><div class="usage-ring"><div><strong>N/A</strong><span>This month</span></div></div><small>Usage details are not available yet</small></article>
+        </div>
+        <article class="info-card connection-card">
+          <div class="card-title"><span>Service Status</span><span class="wifi-mark">⌁</span></div>
+          <div class="status-row"><span>Account</span><b class="status-live" id="serviceStatus">Active</b></div>
+          <div class="status-row"><span>Package</span><b id="connectionPackage">—</b></div>
+          <div class="status-row"><span>Valid until</span><b id="connectionExpiry">—</b></div>
+        </article>
+        <article class="info-card bill-card">
+          <div class="card-title"><span>Current Bill</span><span>▣</span></div>
+          <div class="bill-row"><span>Due date</span><strong id="billDueDate">—</strong></div>
+          <div class="bill-row amount-row"><span>Amount due</span><strong id="billAmount">BDT 0</strong></div>
+          <a class="pay-button" id="payBillButton" href="#payment">Contact reseller to pay</a>
+        </article>
+        <article class="info-card technical-card">
+          <div class="card-title"><span>Technical Info</span><span>ⓘ</span></div>
+          <div class="detail-row"><span>Username</span><strong id="techUsername">—</strong></div>
+          <div class="detail-row"><span>Area</span><strong id="techArea">—</strong></div>
+          <div class="detail-row"><span>Mobile</span><strong id="techMobile">—</strong></div>
+          <div class="detail-row"><span>Balance days</span><strong id="techBalance">0 days</strong></div>
+        </article>
+      </section>
+
+      <section class="portal-view" data-view="history">
+        <h1>Payment History</h1><p class="view-subtitle">Your recent bill payments</p>
+        <div class="info-card history-card" id="paymentHistory"></div>
+      </section>
+
+      <section class="portal-view" data-view="payment">
+        <h1>Payment</h1><p class="view-subtitle">Contact your reseller to confirm payment options.</p>
+        <article class="info-card payment-help"><div class="card-title">Current balance</div><strong id="paymentDueAmount">BDT 0</strong><p id="paymentResellerName">Your ISP</p><a id="resellerPaymentLink" class="pay-button" href="#">Call reseller</a></article>
+        <article class="info-card payment-help" style="margin-top:12px;"><div class="card-title">Card Recharge</div><form id="customerVoucherForm" style="display:grid;gap:12px;margin-top:12px;"><label for="customerVoucherCode" style="font-size:13px;font-weight:600;">Recharge card code</label><input id="customerVoucherCode" name="voucherCode" type="text" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" minlength="10" required autocomplete="off" placeholder="10-digit card code" style="width:100%;height:46px;padding:0 12px;border:1px solid #d5e0e5;border-radius:8px;font:inherit;"><button class="pay-button" type="submit" style="width:100%;border:0;cursor:pointer;">Recharge Card</button><p id="cardRechargeMessage" class="small-note" aria-live="polite" style="margin:0;"></p></form></article>
+        <p class="small-note">After paying, ask your reseller to record the payment in your account.</p>
+      </section>
+
+      <section class="portal-view" data-view="ticket">
+        <h1>Support</h1><p class="view-subtitle">Get help with your internet connection.</p>
+        <article class="info-card support-card"><div class="support-icon">?</div><h2>Need help?</h2><p id="supportContact">Contact your reseller for account and connection support.</p><a id="supportLink" class="pay-button" href="#">Contact reseller</a></article>
+      </section>
+
+      <section class="portal-view" data-view="profile">
+        <h1>My Profile</h1><p class="view-subtitle">Your account information</p>
+        <article class="info-card profile-card"><div class="profile-avatar" id="profileAvatar">U</div><h2 id="profileName">—</h2><p id="profileUsername">—</p>
+          <div class="detail-row"><span>Package</span><strong id="profilePackage">—</strong></div><div class="detail-row"><span>Area</span><strong id="profileArea">—</strong></div><div class="detail-row"><span>Reseller</span><strong id="profileReseller">—</strong></div>
+          <button class="logout-button" id="userLogout">Log out</button>
+        </article>
+      </section>
+    </div>
+    <nav class="bottom-nav" aria-label="Customer navigation">
+      <button class="nav-item active" data-target="home"><span>⌂</span>Home</button>
+      <button class="nav-item" data-target="history"><span>◷</span>History</button>
+      <button class="nav-item" data-target="payment"><span>▣</span>Payment</button>
+      <button class="nav-item" data-target="ticket"><span>◇</span>Support</button>
+      <button class="nav-item" data-target="profile"><span>♙</span>Profile</button>
+    </nav>
+  </main>
+  <script src="customer.js"></script>
+</body>
+</html>

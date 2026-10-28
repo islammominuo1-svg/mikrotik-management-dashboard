@@ -1,0 +1,213 @@
+.voucher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 350px));
+  gap: 14px;
+  align-items: start;
+}
+
+.voucher-card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 350px;
+  min-height: 200px;
+  aspect-ratio: 1.58 / 1;
+  padding: 17px;
+  border: 1px solid #dfc96e;
+  border-radius: 8px;
+  color: #263544;
+  background-color: #fff6ca;
+  background-image: radial-gradient(#e8d991 0.65px, transparent 0.65px);
+  background-size: 9px 9px;
+  box-shadow: 0 5px 15px #111b241a;
+}
+
+.voucher-card::before {
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed #d2ba5d;
+  border-radius: 5px;
+  content: "";
+  pointer-events: none;
+}
+
+.voucher-card-top,
+.voucher-card-details {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.voucher-brand {
+  color: #263544;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.voucher-brand small {
+  display: block;
+  margin-top: 2px;
+  color: #68737b;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.voucher-serial {
+  color: #6e6440;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.voucher-card h3 {
+  margin: 14px 0 2px;
+  color: #7d6411;
+  font-size: 16px;
+}
+
+.voucher-package-name {
+  color: #48545d;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.voucher-card-details {
+  margin-top: 12px;
+}
+
+.voucher-card-details span {
+  color: #6a7276;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.voucher-card-details strong {
+  display: block;
+  margin-top: 2px;
+  color: #263544;
+  font-size: 13px;
+  text-transform: none;
+}
+
+.voucher-code-label {
+  margin-top: 11px;
+  color: #6a7276;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.voucher-code {
+  display: block;
+  margin-top: 3px;
+  padding: 7px 9px;
+  border: 1px solid #e3d89f;
+  border-radius: 5px;
+  background: #fffdf2;
+  color: #202b34;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.voucher-card-footer {
+  margin-top: 7px;
+  color: #777d7d;
+  font-size: 9px;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .voucher-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .voucher-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .voucher-toolbar > div:last-child {
+    flex-wrap: wrap;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  body.voucher-printing * {
+    visibility: hidden !important;
+  }
+
+  body.voucher-printing #voucherCardsView,
+  body.voucher-printing #voucherCardsView * {
+    visibility: visible !important;
+  }
+
+  body.voucher-printing #voucherCardsView {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 6mm;
+  }
+
+  body.voucher-printing .voucher-card {
+    min-height: 62mm;
+    padding: 4mm;
+    border-radius: 2mm;
+    box-shadow: none;
+    break-inside: avoid;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body.voucher-printing .voucher-code {
+    letter-spacing: 1.5px;
+  }
+
+  body.voucher-page-printing .app {
+    display: block;
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  body.voucher-page-printing .sidebar,
+  body.voucher-page-printing .topbar,
+  body.voucher-page-printing .title-row,
+  body.voucher-page-printing #status,
+  body.voucher-page-printing #dashboardPaymentSummary,
+  body.voucher-page-printing #adminDashboardCards,
+  body.voucher-page-printing #resellerSummaryCards,
+  body.voucher-page-printing .voucher-toolbar button,
+  body.voucher-page-printing #voucherGeneratorForm button {
+    display: none !important;
+  }
+
+  body.voucher-page-printing .main,
+  body.voucher-page-printing .content,
+  body.voucher-page-printing #detailPanel {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    color: #17212b;
+    background: #fff;
+  }
+
+  body.voucher-page-printing .voucher-card {
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

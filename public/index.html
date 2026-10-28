@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MikroTik Management Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="voucher.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">◉</span><span>RouterOS</span></div>
+    <nav id="sidebarNav">
+      <button class="nav active" data-page="dashboard"><i class="fa fa-dashboard"></i><span>Dashboard</span></button>
+      <button class="nav admin-only" data-page="interfaces"><i class="fa fa-server"></i><span>Interfaces</span></button>
+      <button class="nav" data-page="activeUsers"><i class="fa fa-user"></i><span>Active Users</span></button>
+      <button class="nav admin-only" data-page="resellerManagement"><i class="fa fa-cog"></i><span>Reseller Management</span></button>
+      <button class="nav" data-page="paymentHistory"><i class="fa fa-money"></i><span>Payment History</span></button>
+      <button class="nav admin-only" data-page="package"><i class="fa fa-file"></i><span>Package Profiles</span></button>
+      <button class="nav admin-only" data-page="vouchers"><i class="fa fa-ticket"></i><span>Voucher Generator</span></button>
+      <button class="nav" data-page="ppp"><i class="fa fa-users"></i><span>PPPoE User</span></button>
+      <button class="nav" data-page="dhcp"><i class="fa fa-sitemap"></i><span>DHCP Client</span></button>
+      <button class="nav" data-page="hotspot"><i class="fa fa-wifi"></i><span>Hotspot User</span></button>
+      <button class="nav admin-only" data-page="routerLogAction"><i class="fa fa-lock"></i><span>Router Logs & Actions</span></button>
+      <button class="nav admin-only" data-page="log"><i class="fa fa-book"></i><span>Logs</span></button>
+    </nav>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="menu" class="icon-btn admin-only" title="Toggle sidebar">☰</button>
+        <span class="portal-badge admin-only" id="topbarPortalBadge">Management Portal</span>
+        <div class="admin-only" style="display:flex;align-items:center;gap:8px;margin-left:10px;">
+          <select id="routerSelect" aria-label="Select router" style="height:32px;background:#131e27;border:1px solid #324452;color:#fff;border-radius:6px;padding:0 8px;font-size:12px;"></select>
+          <button id="addRouterBtn" class="primary" style="height:32px;padding:0 10px;font-size:12px;">+ Add Router</button>
+          <button id="clearJunkBtn" class="search clear-junk-btn" type="button" style="height:32px;">Clear Junk</button>
+          <button id="rebootBtn" class="search" style="height:32px;color:#fca5a5;border-color:#7d3535;">Reboot</button>
+        </div>
+      </div>
+      <div class="topbar-user-area">
+        <button id="openPasswordModalBtn" class="user-info-chip profile-button" type="button" title="Change password">
+          <span class="avatar" id="headerAvatar">👤</span><div><span class="username-text" id="headerUserName">User</span><span class="role-tag admin-only" id="headerRoleTag">Admin</span></div>
+        </button>
+        <button id="logoutBtn" class="logout-btn" type="button" title="Log out"><span>Log out</span></button>
+      </div>
+    </header>
+    <section class="content">
+      <div class="title-row"><h1 id="pageMainTitle">Dashboard</h1><div class="actions"><button id="refresh" class="search">Refresh ↻</button></div></div>
+      <div id="status" class="status"></div>
+      <section id="dashboardPaymentSummary" style="display:none;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin:0 0 18px;">
+        <article class="reseller-kpi-card summary-kpi summary-total"><div class="summary-kpi-head"><div class="kpi-title">Total Payments</div><span class="summary-kpi-icon" aria-hidden="true">💰</span></div><div class="kpi-value" id="summaryTotalPayments">BDT 0</div><div class="summary-kpi-desc">Online payments + received cash + card recharge</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-online"><div class="summary-kpi-head"><div class="kpi-title" id="summaryOnlineLabel">Total Online Payments</div><span class="summary-kpi-icon" aria-hidden="true">🌐</span></div><div class="kpi-value" id="summaryOnlinePayments">BDT 0</div><div class="summary-kpi-desc">Received online payments</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-cash"><div class="summary-kpi-head"><div class="kpi-title" id="summaryCashLabel">Total Cash Receive</div><span class="summary-kpi-icon" aria-hidden="true">💵</span></div><div class="kpi-value" id="summaryProcessingCash">BDT 0</div><div class="summary-kpi-desc">Cash confirmed as received</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-online"><div class="summary-kpi-head"><div class="kpi-title">Card Recharge Payment</div><span class="summary-kpi-icon" aria-hidden="true">🎟️</span></div><div class="kpi-value" id="summaryCardRechargePayments">BDT 0</div><div class="summary-kpi-desc">Redeemed recharge cards</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-due"><div class="summary-kpi-head"><div class="kpi-title" id="summaryPendingLabel">Total Pending Reseller Funds</div><span class="summary-kpi-icon" aria-hidden="true">⏳</span></div><div class="kpi-value" id="summaryPendingResellerFunds">BDT 0</div><div class="summary-kpi-desc">Cash awaiting confirmation</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-due"><div class="summary-kpi-head"><div class="kpi-title">Emergency Users Count</div><span class="summary-kpi-icon" aria-hidden="true">⚠️</span></div><div class="kpi-value" id="summaryEmergencyUsers">0</div><div class="summary-kpi-desc">Customers who used Emergency Extend</div></article>
+        <article class="reseller-kpi-card summary-kpi summary-previous"><div class="summary-kpi-head"><div class="kpi-title">Previous Month Total Amount</div><span class="summary-kpi-icon" aria-hidden="true">📊</span></div><div class="kpi-value" id="summaryPreviousMonthAmount">BDT 0</div><div class="summary-kpi-desc" id="summaryMonthTrend">Current month comparison</div></article>
+      </section>
+      <section id="adminDashboardCards" class="admin-only">
+        <section class="cards">
+          <article class="panel"><h3>System Resources</h3><div class="donut-wrap"><canvas id="systemDonut" width="180" height="180"></canvas><div class="donut-label"><strong id="systemCpuValue">0%</strong><span>CPU Used</span></div></div><div class="legend-row"><span>CPU <b id="cpuLegend">0%</b></span><span>Memory <b id="memLegend">0%</b></span></div><div class="mini-stats"><div><label>Free Memory</label><strong id="freeMem">—</strong></div><div><label>Uptime</label><strong id="uptime">—</strong></div></div></article>
+          <article class="panel"><h3>Network Traffic</h3><div class="traffic-chart-wrap"><canvas id="trafficChart" width="300" height="160"></canvas></div><div class="legend-row traffic-legend"><span id="rxIndicator" class="traffic-pill rx">RX <b id="rxLabel">—</b></span><span id="txIndicator" class="traffic-pill tx">TX <b id="txLabel">—</b></span></div><div class="mini-stats"><div><label>Rx</label><strong id="rx">—</strong></div><div><label>Tx</label><strong id="tx">—</strong></div></div></article>
+          <article class="panel user-panel"><h3>Active Users</h3><div class="user-ring-wrap" id="userRing"><div class="user-ring-center"><strong id="userPercent">0%</strong><small>Active</small></div></div><div class="user-stat"><span>Total Users</span><b id="totalUsersCount">0</b></div><div class="user-stat"><span>Active</span><b id="activeUsersCount">0</b></div><div class="user-stat"><span>Disabled</span><b id="disabledUsersCount">0</b></div></article>
+          <article class="panel billing-panel"><h3>Billing Overview</h3><div class="billing-ring-wrap" id="billingRing"><div class="billing-ring-center"><strong id="billingTotalValue">BDT 0</strong><small>Payments</small></div></div><div id="billingTotalText"></div><div id="paidAmountText"></div><div id="dueAmountText"></div></article>
+        </section>
+      </section>
+      <section id="resellerSummaryCards" class="reseller-cards reseller-only"></section>
+      <div id="detailPanel"></div>
+    </section>
+  </main>
+</div>
+
+<div id="changePasswordModal" class="modal hidden"><div class="modal-box"><button id="closeChangePasswordModal" class="close" type="button">×</button><h2>Change Password</h2><form id="changePasswordForm"><label>Current Password<input name="currentPassword" type="password" required></label><label>New Password<input name="newPassword" type="password" required></label><label>Confirm Password<input name="confirmPassword" type="password" required></label><button class="primary" type="submit">Save Password</button></form></div></div>
+<div id="renewCustomerModal" class="modal hidden"><div class="modal-box"><button id="closeRenewCustomerModal" class="close" type="button">×</button><h2>Renew Subscription</h2><p id="renewCustomerLabel" class="hint"></p><form id="renewCustomerForm"><label>Payment Method<select name="paymentMethod" id="renewPaymentMethod" required><option value="Cash">Cash</option><option value="bKash">bKash</option><option value="card">Card Recharge</option></select></label><label id="renewAmountLabel">Payment Amount (BDT)<input name="amount" type="number" min="0.01" step="0.01" required></label><small class="hint">A regular recharge adds 30 days, or 25 days after Emergency Extend was used. Card validity is set when the card is generated.</small><label id="renewReceiverLabel">Receiver Name<input name="receiverName" id="renewReceiverName"></label><label id="renewTrxLabel" class="hidden">Transaction ID<input name="trxId" id="renewTrxId"></label><label id="renewVoucherCodeLabel" class="hidden">Recharge Card Code<input name="voucherCode" id="renewVoucherCode" type="text" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" minlength="10" autocomplete="off" placeholder="10-digit card code"></label><button class="primary" type="submit">Save Renewal</button></form></div></div>
+<div id="paymentModal" class="modal hidden"><div class="modal-box"><button id="closePaymentModal" class="close" type="button">×</button><h2>Record Payment</h2><form id="recordPaymentForm"><label>Payment Type<select name="paymentType" id="paymentTypeSelect"><option value="customer">Customer Payment</option><option value="reseller">Reseller Balance/Fee</option></select></label><label>Customer / Reseller Name<input name="customerName" id="paymentCustomerNameInput"></label><label>Username<input name="customerUsername" id="paymentCustomerUsernameInput"></label><label>Package / Description<input name="packageName"></label><label>Amount (BDT)<input name="amount" type="number" min="1" step="0.01" required></label><label>Payment Method<select name="paymentMethod"><option>bKash</option><option>Cash</option></select></label><label>Transaction ID<input name="trxId"></label><label>Status<select name="status"><option value="paid">Paid</option><option value="pending">Pending</option><option value="due">Due</option></select></label><label>Notes<input name="notes"></label><button class="primary" type="submit">Save Payment</button></form></div></div>
+<div id="receiveCashModal" class="modal hidden"><div class="modal-box"><button id="closeReceiveCashModal" class="close" type="button">×</button><h2>Confirm Cash</h2><p id="receiveCashPaymentLabel"></p><form id="receiveCashForm"><label>Amount<input name="amount" type="number" min="0.01" step="0.01" required></label><label>Receiver Name<input name="receiverName" required></label><button class="primary" type="submit">Confirm Payment</button></form></div></div>
+<div id="resellerReceivePaymentModal" class="modal hidden"><div class="modal-box"><button id="closeResellerReceivePaymentModal" class="close" type="button">×</button><h2>Receive Reseller Payment</h2><p id="resellerReceivePaymentName"></p><form id="resellerReceivePaymentForm"><label>Payment Method<select name="paymentMethod" required><option value="Cash">Cash</option><option value="Bank">Bank</option><option value="bKash">bKash</option></select></label><label>Amount (BDT)<input name="amount" type="number" min="0.01" step="0.01" required></label><label id="resellerReceiveTrxField">TX / Reference ID<input name="trxId"></label><label>Received By<input name="receiverName" required></label><label>Bank / bKash details<input name="details" placeholder="Sender or account details"></label><button class="primary" type="submit">Save Received Payment</button></form></div></div>
+<div id="addResellerModal" class="modal hidden"><div class="modal-box"><button id="closeAddResellerModal" class="close" type="button">×</button><h2>Add Reseller</h2><form id="addResellerForm"><label>Full Name<input name="fullName" required></label><label>Username<input name="username" required></label><label>Password<input name="password" type="password" required></label><label>Confirm Password<input name="confirmPassword" type="password" required></label><label>Mobile<input name="mobile" required></label><label>Email<input name="email" type="email" required></label><label>Zone<input name="zone" required></label><label><input name="isActive" type="checkbox" checked> Active</label><button class="primary" type="submit">Save Reseller</button></form></div></div>
+<div id="routerModal" class="modal hidden"><div class="modal-box"><button id="closeRouterModal" class="close" type="button">×</button><h2>Add Router</h2><form id="routerForm"><label>Router Name<input name="name" required></label><label>Host / IP<input name="host" required></label><label>RouterOS User<input name="username" required></label><label>RouterOS Password<input name="password" type="password" required></label><label>REST API Port<input name="port" type="number" value="443"></label><label><input name="verifyTls" type="checkbox"> Verify TLS</label><button class="primary" type="submit">Save Router</button></form></div></div>
+<div id="packageModal" class="modal hidden"><div class="modal-box"><button id="closePackageModal" class="close" type="button">×</button><h2>Add Package Profile</h2><form id="packageForm"><label>Profile Name<input name="name" required></label><label>Price<input name="price" type="number" min="0" required></label><label>Speed / Rate Limit<input name="speed" required></label><label>Description<input name="description"></label><button class="primary" type="submit">Save Profile</button></form></div></div>
+<script src="app.js?v=20261005-reseller-active-pppoe"></script>
+</body>
+</html>

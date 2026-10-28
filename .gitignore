@@ -1,0 +1,5 @@
+server/.env
+!server/.env.example
+server/certs/*.crt
+server/certs/*.pem
+server/.voucher-encryption-key
